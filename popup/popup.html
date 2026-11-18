@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Logo &amp; Keyword Blur</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="title">
+      <img src="../icons/icon32.png" alt="" width="20" height="20">
+      <h1>Logo &amp; Keyword Blur</h1>
+    </div>
+    <label class="switch" title="Alt+Shift+B">
+      <input type="checkbox" id="enabled">
+      <span class="track"></span>
+    </label>
+  </header>
+
+  <main id="main">
+    <p class="stats" id="stats">Checking this page…</p>
+
+    <section class="card">
+      <label class="row">
+        <span>Blur logos</span>
+        <input type="checkbox" id="blurLogos">
+      </label>
+      <div class="logo-mode" id="logoModeBox">
+        <div class="seg" role="radiogroup" aria-label="Which logos">
+          <label><input type="radio" name="logoMode" value="all"><span>All logos</span></label>
+          <label><input type="radio" name="logoMode" value="list"><span>Only these brands</span></label>
+        </div>
+        <div id="brandBox">
+          <form id="brandForm" class="add">
+            <input type="text" id="brandInput" placeholder="Brand name, e.g. Nike" autocomplete="off">
+            <button type="submit">Add</button>
+          </form>
+          <button type="button" class="link" id="brandManyOpen">Add many…</button>
+          <div class="many" id="brandMany" hidden>
+            <textarea id="brandManyText" rows="6" placeholder="One brand per line" spellcheck="false"></textarea>
+            <div class="many-actions">
+              <span class="muted" id="brandManyCount"></span>
+              <button type="button" class="ghost" id="brandManyCancel">Cancel</button>
+              <button type="button" class="primary" id="brandManyAdd">Add all</button>
+            </div>
+          </div>
+          <div class="list-head"><span>Brands</span><button type="button" class="eye" data-list="logoNames" aria-pressed="false" title="Show brand names"></button></div>
+          <ul id="brandList" class="chips"></ul>
+          <p id="brandEmpty" class="empty">Add a brand. Until then no logos are blurred.</p>
+        </div>
+      </div>
+      <label class="row">
+        <span>Blur keywords</span>
+        <input type="checkbox" id="blurKeywords">
+      </label>
+      <label class="row slider">
+        <span>Strength <output id="strengthOut"></output></span>
+        <input type="range" id="strength" min="2" max="24" step="1">
+      </label>
+    </section>
+
+    <section class="card">
+      <div class="list-head section-label"><span>Keywords</span><button type="button" class="eye" data-list="keywords" aria-pressed="false" title="Show keywords"></button></div>
+      <form id="addForm" class="add">
+        <input type="text" id="kwInput" placeholder="Add keyword or phrase" autocomplete="off">
+        <button type="submit">Add</button>
+      </form>
+      <button type="button" class="link" id="kwManyOpen">Add many…</button>
+          <div class="many" id="kwMany" hidden>
+            <textarea id="kwManyText" rows="6" placeholder="One keyword or phrase per line" spellcheck="false"></textarea>
+            <div class="many-actions">
+              <span class="muted" id="kwManyCount"></span>
+              <button type="button" class="ghost" id="kwManyCancel">Cancel</button>
+              <button type="button" class="primary" id="kwManyAdd">Add all</button>
+            </div>
+          </div>
+      <p class="hint">Saved words show as dots. Click the eye to see them.</p>
+      <ul id="kwList" class="chips"></ul>
+      <p id="kwEmpty" class="empty">No keywords yet.</p>
+      <div class="options">
+        <label><input type="checkbox" id="wholeWord"> Whole words only</label>
+        <label><input type="checkbox" id="caseSensitive"> Match case</label>
+      </div>
+    </section>
+  </main>
+
+  <footer>Shortcut: <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> turns blurring on or off</footer>
+
+  <script src="../src/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

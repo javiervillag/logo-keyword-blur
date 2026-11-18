@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Globex blur test page</title>
+  <style>
+    body { font: 16px/1.5 Arial, sans-serif; margin: 0; color: #111; }
+    header, footer, section { padding: 12px 20px; border-bottom: 1px solid #ddd; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .text-logo { font-weight: bold; font-size: 22px; }
+    [data-expect] { outline: 1px dashed transparent; }
+    .clients img { height: 40px; }
+    /* Like a real app's faded "Powered by" mark: a page filter marked !important. */
+    .footer-powered .brandco-wordmark { filter: grayscale(1) opacity(.5) !important;
+      -webkit-mask: url(img/brandco-wordmark.svg) center / contain no-repeat; mask: url(img/brandco-wordmark.svg) center / contain no-repeat; }
+  </style>
+</head>
+<body>
+  <!-- Keywords used by the test: Globex, Initech, "Massive Dynamic" -->
+  <header>
+    <a href="/" class="navbar-brand"><img id="brand-img" data-expect="blur" src="img/logo-acme.svg" alt="Acme" width="160" height="40"></a>
+    <a href="/" id="home-svg" aria-label="Home"><svg data-expect="blur" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#7c3aed"/></svg></a>
+    <div class="site-logo text-logo" data-expect="blur">Acme Co</div>
+    <nav><a href="/about">About</a> <a href="/pricing">Pricing</a></nav>
+    <a href="/logout"><img data-expect="clear" src="img/logout.svg" alt="Log out" width="24" height="24"></a>
+  </header>
+
+  <section class="hero">
+    <p id="p1" data-expect="clear">We worked with Globex and Initech last year. Initechnology is a different word.</p>
+    <p id="p2">Phrase test: Massive   Dynamic signed too. massive dynamic lower-case as well.</p>
+    <img id="team" data-expect="clear" src="img/team.svg" alt="Our team at the offsite" width="200" height="200">
+    <img id="hq" data-expect="blur" src="img/hq.svg" alt="Globex headquarters" width="240" height="140">
+  </section>
+
+  <section class="clients" aria-label="Trusted by">
+    <img data-expect="blur" src="img/client-Umbrella.svg" alt="Umbrella">
+    <img data-expect="blur" src="img/client-Stark.svg" alt="Stark">
+    <img data-expect="blur" src="img/client-Wayne.svg" alt="Wayne">
+    <img data-expect="blur" src="img/client-Hooli.svg" alt="Hooli">
+  </section>
+
+  <section>
+    <div contenteditable="true" id="editor">Editable: Globex should stay untouched here.</div>
+    <textarea id="ta">Globex in a textarea</textarea>
+    <p>Dynamic text: <span id="dyn">loading</span></p>
+    <div id="late"></div>
+    <span class="footer-powered"><span>Powered by</span>
+      <img id="wordmark" data-expect="blur" class="brandco-wordmark" src="img/brandco-wordmark.svg" alt="BrandCo" width="120" height="30"></span>
+    <shadow-card id="card"></shadow-card>
+  </section>
+
+  <footer>
+    <a href="https://www.linkedin.com/company/acme"><svg class="icon icon-linkedin" data-expect="blur" width="24" height="24"><rect width="24" height="24" rx="4" fill="#0a66c2"/></svg></a>
+    <a href="https://github.com/acme" aria-label="GitHub"><svg data-expect="blur" width="24" height="24"><circle cx="12" cy="12" r="11" fill="#111"/></svg></a>
+    <span>© Acme Co. Built with Initech tools.</span>
+  </footer>
+
+  <script>
+    // A text node a framework keeps a reference to and later rewrites (like React does).
+    const dyn = document.getElementById('dyn');
+    const node = document.createTextNode('nothing yet');
+    dyn.replaceChildren(node);
+    setTimeout(() => { node.data = 'Initech shipped and Globex replied'; }, 300);
+    setTimeout(() => { node.data = 'Initech only'; }, 700);
+
+    // Content added after load (infinite scroll, SPA navigation).
+    setTimeout(() => {
+      document.getElementById('late').innerHTML = '<p>Late content mentions Globex.</p>';
+    }, 500);
+
+    // Shadow root attached after the element is already on the page.
+    setTimeout(() => {
+      class ShadowCard extends HTMLElement {
+        connectedCallback() {
+          const root = this.attachShadow({ mode: 'open' });
+          root.innerHTML = '<p>Inside shadow DOM: Initech partner.</p>';
+        }
+      }
+      customElements.define('shadow-card', ShadowCard);
+    }, 400);
+  </script>
+</body>
+</html>
